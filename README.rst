@@ -20,15 +20,15 @@ Interactive Cube
 ~~~~~~~~~~~~~~~~
 To use the matplotlib-based interactive cube, run 
 
-  .. code-block:: bash
+   .. code-block:: bash
 
-     python magiccube/cube_interactive.py
+      python magiccube/cube_interactive.py
 
 If you want a cube with a different number of sides, use e.g.
 
-  .. code-block:: bash
+   .. code-block:: bash
 
-     python magiccube/cube_interactive.py 5
+      python magiccube/cube_interactive.py 5
 
 This will create a 5x5x5 cube
 
