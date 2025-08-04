@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling>=1.27.0,<2"]
+build-backend = "hatchling.build"
+
+[project]
+dependencies = ["matplotlib>=3.10.5,<4", "numpy>=2.3.2,<3"]
+name = "magiccube"
+dynamic = ["version"]
+description = "An interactive Rubik's Cube simulator in Python using matplotlib."
+readme = "README.rst"
+requires-python = ">=3.7"
+authors = [
+    { name = "David W. Hogg" },
+    { name = "Jake Vanderplas" },
+    { name = "Misagh Soltani" },
+]
+license = "GPL-2.0"
+license-files = ["LICENSE.txt"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["MagicCube", "Rubik's Cube", "Puzzle"]
+
+[project.urls]
+GitHub = "https://github.com/davidwhogg/MagicCube"
+
+
+[project.scripts]
+magiccube = "magiccube.cube_interactive:main"
+
+# [tool.hatchling.packages.find]
+# include = ["magiccube*"] # Only consider package names starting with magiccube (e.g. magiccube, magiccube.training, etc.) when auto-discovering packages
+# namespaces = false # Don't treat directories without an __init__.py as namespace packages; only folders with __init__.py count
+
+[tool.hatchling]
+include-package-data = true
+
+# [tool.hatch.metadata]
+# allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["magiccube"]
+# include = []
+exclude = ["*.py[cod]", "__pycache__", ".DS_Store", ".git", ".vscode"]
+
+[tool.hatch.build.targets.sdist]
+# Use the same lists as wheel
+packages = ["@wheel.packages"]
+# include = ["@wheel.include"]
+exclude = ["@wheel.exclude"]
+
+
+[tool.hatch.version]
+path = "magiccube/__init__.py"
+
+[dependency-groups]
+default = ["magiccube"]
+dev = [{ include-group = "default" }, "ruff", "pyright"]
+build = [{ include-group = "default" }, "hatch"]
+all = [{ include-group = "default" }, { include-group = "dev" }]

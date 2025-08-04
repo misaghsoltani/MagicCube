@@ -4,3 +4,13 @@
 *.pdf
 *.pyc
 *.png
+# pixi environments
+.pixi
+.pixi/*
+!.pixi/config.toml
+__pycache__
+__pycache__/*
+.build-debug
+*.conda
+dist
+dist/*
