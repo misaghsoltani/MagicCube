@@ -86,7 +86,7 @@ docstring-code-format = true
 docstring-code-line-length = "dynamic" # This only has an effect when the 'docstring-code-format' setting is enabled.
 
 [lint.pydocstyle]
-convention = "google"
+convention = "numpy"
 
 [lint.pylint]
 max-positional-args = 20

@@ -30,15 +30,11 @@ GitHub = "https://github.com/davidwhogg/MagicCube"
 [project.scripts]
 magiccube = "magiccube.cube_interactive:main"
 
-# [tool.hatchling.packages.find]
-# include = ["magiccube*"] # Only consider package names starting with magiccube (e.g. magiccube, magiccube.training, etc.) when auto-discovering packages
-# namespaces = false # Don't treat directories without an __init__.py as namespace packages; only folders with __init__.py count
+[tool.hatchling.packages.find]
+include = ["magiccube*"]
 
 [tool.hatchling]
 include-package-data = true
-
-# [tool.hatch.metadata]
-# allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["magiccube"]
@@ -46,10 +42,9 @@ packages = ["magiccube"]
 exclude = ["*.py[cod]", "__pycache__", ".DS_Store", ".git", ".vscode"]
 
 [tool.hatch.build.targets.sdist]
-# Use the same lists as wheel
-packages = ["@wheel.packages"]
-# include = ["@wheel.include"]
-exclude = ["@wheel.exclude"]
+packages = ["magiccube"]
+# include = []
+exclude = ["*.py[cod]", "__pycache__", ".DS_Store", ".git", ".vscode"]
 
 
 [tool.hatch.version]

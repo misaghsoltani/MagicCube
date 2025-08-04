@@ -48,7 +48,6 @@ magiccube = { path = ".", editable = true }
 ruff = "*"
 pyright = ">=1.1.403,<2"
 mypy = ">=1.17.1,<2"
-shellcheck = ">=0.10.0,<0.11"
 
 [feature.dev.tasks]
 lint = "ruff check --fix"
