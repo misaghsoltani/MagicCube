@@ -25,7 +25,7 @@ class Quaternion:
         theta : array_like
             array of rotation angles in radians, shape = v.shape[:-1].
 
-        Returns:
+        Returns
         -------
         q : quaternion object
             quaternion representing the rotations
@@ -60,7 +60,7 @@ class Quaternion:
         other : Quaternion
             The quaternion to multiply with.
 
-        Returns:
+        Returns
         -------
         Quaternion
             The product of the two quaternions.
@@ -135,7 +135,8 @@ class Quaternion:
             order="F",
             dtype=np.float32,
         ).T
-        return mat.reshape(shape + (3, 3))
+        reshaped_mat: NDArray[np.float32] = mat.reshape(shape + (3, 3)).astype(np.float32)
+        return reshaped_mat
 
     def rotate(self, points: NDArray[np.float32]) -> NDArray[np.float32]:
         """Rotate points using the quaternion.
@@ -145,13 +146,14 @@ class Quaternion:
         points : NDArray[np.float32]
             Array of points to rotate, with last dimension 3.
 
-        Returns:
+        Returns
         -------
         NDArray[np.float32]
             Array of rotated points with the same shape as input.
         """
         rotation_matrix = self.as_rotation_matrix()
-        return np.dot(points, rotation_matrix.T)
+        rotated_points: NDArray[np.float32] = np.dot(points, rotation_matrix.T).astype(np.float32)
+        return rotated_points
 
 
 def project_points(
@@ -174,7 +176,7 @@ def project_points(
         direction of y-axis for view.  An error will be raised if it
         is parallel to the view.
 
-    Returns:
+    Returns
     -------
     proj: array_like
         array of projected points: same shape as points.
@@ -210,4 +212,7 @@ def project_points(
     dproj = -dpoint * v2 / dpoint_view
 
     trans = list(range(1, dproj.ndim)) + [0]
-    return np.array([np.dot(dproj, xdir), np.dot(dproj, ydir), -np.dot(dpoint, zdir)]).transpose(trans)
+    result_array: NDArray[np.float32] = np.array(
+        [np.dot(dproj, xdir), np.dot(dproj, ydir), -np.dot(dpoint, zdir)], dtype=np.float32
+    ).transpose(trans)
+    return result_array

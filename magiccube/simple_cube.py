@@ -48,7 +48,7 @@ class Quaternion:
         theta : array_like
             array of rotation angles in radians, shape = v.shape[:-1].
 
-        Returns:
+        Returns
         -------
         q : quaternion object
             quaternion representing the rotations
@@ -147,7 +147,8 @@ class Quaternion:
             order="F",
             dtype=np.float32,
         )
-        return mat.T.reshape(shape + (3, 3))
+        reshaped_mat: NDArray[np.float32] = mat.T.reshape(shape + (3, 3)).astype(np.float32)
+        return reshaped_mat
 
 
 class CubeAxes(Axes):
@@ -212,7 +213,7 @@ class CubeAxes(Axes):
             "xticks": [],
             "yticks": [],
         })
-        super().__init__(*args, **kwargs)  # type: ignore[misc]
+        super().__init__(*args, **kwargs)
 
         # connect some GUI events
         self.figure.canvas.mpl_connect("button_press_event", self._mouse_press)  # type: ignore[arg-type]
@@ -304,7 +305,7 @@ class CubeAxes(Axes):
         self.figure.canvas.draw()
 
     def _key_press(self, event: KeyEvent) -> None:
-        """Handler for key press events."""
+        """Handle key press events."""
         if event.key == "shift":
             self._ax_LR = np.array([0, 0, 1], dtype=np.float32)
             self._shift_on = True
@@ -320,24 +321,24 @@ class CubeAxes(Axes):
         self.draw_cube()
 
     def _key_release(self, event: KeyEvent) -> None:
-        """Handler for key release event."""
+        """Handle key release event."""
         if event.key == "shift":
             self._ax_LR = np.array([0, -1, 0], dtype=np.float32)
 
     def _mouse_press(self, event: MouseEvent) -> None:
-        """Handler for mouse button press."""
+        """Handle mouse button press."""
         if event.button == 1 and event.x is not None and event.y is not None:
             self._active = True
             self._xy = (float(event.x), float(event.y))
 
     def _mouse_release(self, event: MouseEvent) -> None:
-        """Handler for mouse button release."""
+        """Handle mouse button release."""
         if event.button == 1:
             self._active = False
             self._xy = None
 
     def _mouse_motion(self, event: MouseEvent) -> None:
-        """Handler for mouse motion."""
+        """Handle mouse motion."""
         if self._active and self._xy is not None and event.x is not None and event.y is not None:
             dx = float(event.x) - self._xy[0]
             dy = float(event.y) - self._xy[1]

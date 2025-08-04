@@ -19,7 +19,8 @@ class PolyView3D(Axes):
     This class extends matplotlib Axes to provide 3D polygon rendering
     with interactive rotation capabilities using mouse and keyboard.
 
-    Attributes:
+    Attributes
+    ----------
         view : ndarray
             The viewing position in 3D space.
         start_rot : Quaternion
@@ -109,6 +110,7 @@ class PolyView3D(Axes):
         But it is much more efficient (it avoids redrawing each time).
 
         Parameters
+        ----------
         xyzs : list
             each item of xyzs is an array of shape (Npts, 3) where Npts may
             be different for each item
@@ -133,7 +135,8 @@ class PolyView3D(Axes):
     def rotate(self, rot: Quaternion) -> None:
         """Apply rotation to the current view.
 
-        Parameters:
+        Parameters
+        ----------
             rot : Quaternion
                 The rotation quaternion to apply.
         """
@@ -148,7 +151,7 @@ class PolyView3D(Axes):
         self.figure.canvas.draw()
 
     def _key_press(self, event: Any) -> None:
-        """Handler for key press events."""
+        """Handle key press events."""
         if event.key == "shift":
             self._ax_LR = np.array([0, 0, 1], dtype=np.float32)
 
@@ -163,12 +166,12 @@ class PolyView3D(Axes):
         self._update_projection()
 
     def _key_release(self, event: Any) -> None:
-        """Handler for key release event."""
+        """Handle key release event."""
         if event.key == "shift":
             self._ax_LR = np.array([0, -1, 0], dtype=np.float32)
 
     def _mouse_press(self, event: Any) -> None:
-        """Handler for mouse button press."""
+        """Handle mouse button press."""
         self._event_xy = (event.x, event.y)
         if event.button == 1:
             self._button1 = True
@@ -176,7 +179,7 @@ class PolyView3D(Axes):
             self._button2 = True
 
     def _mouse_release(self, event: Any) -> None:
-        """Handler for mouse button release."""
+        """Handle mouse button release."""
         self._event_xy = None
         if event.button == 1:
             self._button1 = False
@@ -184,7 +187,7 @@ class PolyView3D(Axes):
             self._button2 = False
 
     def _mouse_motion(self, event: Any) -> None:
-        """Handler for mouse motion."""
+        """Handle mouse motion."""
         if (self._button1 or self._button2) and self._event_xy is not None:
             dx = event.x - self._event_xy[0]
             dy = event.y - self._event_xy[1]

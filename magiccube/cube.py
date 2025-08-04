@@ -49,7 +49,7 @@ to-do
   parts of big cubes have had cubie swaps or stickers rotated.
 - Figure out a physical "cubie" model to replace the "sticker" model.
 
-"""
+"""  # noqa: D404
 
 from __future__ import annotations
 
@@ -183,7 +183,7 @@ class Cube:
         return None
 
     def _rotate(self, args: list[tuple[int, range, int] | tuple[int, int, range]]) -> None:
-        """Internal function for the `move()` function."""
+        """Perform internal rotation for the `move()` function."""
         a0 = args[0]
         foo = self.stickers[a0]
         a = a0
@@ -202,7 +202,7 @@ class Cube:
 
     @staticmethod
     def _render_points(points: list[NDArray[np.float32]], viewpoint: NDArray[np.float32]) -> list[NDArray[np.float32]]:
-        """Internal function for the `render()` function.
+        """Perform internal function for the `render()` function.
 
         Clunky projection from 3-d to 2-d, but also return a zorder variable.
         """
@@ -250,11 +250,11 @@ class Cube:
                 xdir = self.xdirs[i]
                 ydir = np.cross(zdir, xdir)  # insanity: left-handed!
                 psc = 1.0 - 2.0 * self.stickerthickness
-                corners = [
-                    psc * zdir - psc * xdir - psc * ydir,
-                    psc * zdir + psc * xdir - psc * ydir,
-                    psc * zdir + psc * xdir + psc * ydir,
-                    psc * zdir - psc * xdir + psc * ydir,
+                corners: list[NDArray[np.float32]] = [
+                    (psc * zdir - psc * xdir - psc * ydir).astype(np.float32),
+                    (psc * zdir + psc * xdir - psc * ydir).astype(np.float32),
+                    (psc * zdir + psc * xdir + psc * ydir).astype(np.float32),
+                    (psc * zdir - psc * xdir + psc * ydir).astype(np.float32),
                 ]
                 projects = self._render_points(corners, viewpoint)
                 xys = [p[0:2] + shift for p in projects]
@@ -301,14 +301,14 @@ class Cube:
         small = 0.5 * (1.0 - self.stickerwidth)
         large = 1.0 - small
         return [
-            zdir - xdir + (j + small) * csz * xdir - ydir + (k + small + small) * csz * ydir,
-            zdir - xdir + (j + small + small) * csz * xdir - ydir + (k + small) * csz * ydir,
-            zdir - xdir + (j + large - small) * csz * xdir - ydir + (k + small) * csz * ydir,
-            zdir - xdir + (j + large) * csz * xdir - ydir + (k + small + small) * csz * ydir,
-            zdir - xdir + (j + large) * csz * xdir - ydir + (k + large - small) * csz * ydir,
-            zdir - xdir + (j + large - small) * csz * xdir - ydir + (k + large) * csz * ydir,
-            zdir - xdir + (j + small + small) * csz * xdir - ydir + (k + large) * csz * ydir,
-            zdir - xdir + (j + small) * csz * xdir - ydir + (k + large - small) * csz * ydir,
+            (zdir - xdir + (j + small) * csz * xdir - ydir + (k + small + small) * csz * ydir).astype(np.float32),
+            (zdir - xdir + (j + small + small) * csz * xdir - ydir + (k + small) * csz * ydir).astype(np.float32),
+            (zdir - xdir + (j + large - small) * csz * xdir - ydir + (k + small) * csz * ydir).astype(np.float32),
+            (zdir - xdir + (j + large) * csz * xdir - ydir + (k + small + small) * csz * ydir).astype(np.float32),
+            (zdir - xdir + (j + large) * csz * xdir - ydir + (k + large - small) * csz * ydir).astype(np.float32),
+            (zdir - xdir + (j + large - small) * csz * xdir - ydir + (k + large) * csz * ydir).astype(np.float32),
+            (zdir - xdir + (j + small + small) * csz * xdir - ydir + (k + large) * csz * ydir).astype(np.float32),
+            (zdir - xdir + (j + small) * csz * xdir - ydir + (k + large - small) * csz * ydir).astype(np.float32),
         ]
 
     def render_flat(self, ax: Axes) -> None:
@@ -393,7 +393,7 @@ def adjacent_edge_flip(cube: Cube) -> None:
 
 
 def swap_off_diagonal(cube: Cube, f: str, l1: int, l2: int) -> None:
-    """A big-cube move that swaps three cubies (I think) but looks like two."""
+    """Perform a big-cube move that swaps three cubies (I think) but looks like two."""
     cube.move(f, l1, 1)
     cube.move(f, l2, 1)
     cube.move("U", 0, -1)

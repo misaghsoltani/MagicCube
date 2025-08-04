@@ -103,10 +103,10 @@ class Cube:
     z: NDArray[np.float32]
     x, y, z = np.eye(3, dtype=np.float32)
     rots: list[Quaternion] = [
-        Quaternion.from_v_theta(np.eye(3, dtype=np.float32)[0], np.float32(theta)) for theta in (np.pi / 2, -np.pi / 2)
+        Quaternion.from_v_theta(np.eye(3, dtype=np.float32)[0], float(theta)) for theta in (np.pi / 2, -np.pi / 2)
     ]
     rots += [
-        Quaternion.from_v_theta(np.eye(3, dtype=np.float32)[1], np.float32(theta))
+        Quaternion.from_v_theta(np.eye(3, dtype=np.float32)[1], float(theta))
         for theta in (np.pi / 2, -np.pi / 2, np.pi, 2 * np.pi)
     ]
 
@@ -166,7 +166,7 @@ class Cube:
             colors_i: NDArray[np.int_] = i + np.zeros(face_centroids_t.shape[0], dtype=int)
 
             # append face ID to the face centroids for lex-sorting
-            face_centroids_t = np.hstack([face_centroids_t.reshape(-1, 3), colors_i[:, None]])
+            face_centroids_t = np.hstack([face_centroids_t.reshape(-1, 3), colors_i[:, None].astype(np.float32)])
             sticker_centroids_t = sticker_centroids_t.reshape((-1, 3))
 
             faces.append(faces_t)
@@ -214,7 +214,7 @@ class Cube:
             self._move_list.append((f, n, layer))
 
         v: NDArray[np.float32] = self.facesdict[f]
-        r: Quaternion = Quaternion.from_v_theta(v, np.float32(n * np.pi / 2))
+        r: Quaternion = Quaternion.from_v_theta(v, float(n * np.pi / 2))
         matrix: NDArray[np.float32] = r.as_rotation_matrix()
 
         proj: NDArray[np.float32] = np.dot(self._face_centroids[:, :3], v)
@@ -254,7 +254,7 @@ class InteractiveCube(Axes):
             self.cube = Cube(cube)
 
         self._view: tuple[float, float, float] = view
-        self._start_rot: Quaternion = Quaternion.from_v_theta((1, -1, 0), np.float32(-np.pi / 6))
+        self._start_rot: Quaternion = Quaternion.from_v_theta((1, -1, 0), float(-np.pi / 6))
 
         if fig is None:
             fig = plt.gcf()
@@ -401,7 +401,7 @@ class InteractiveCube(Axes):
         self.cube._move_list = []
 
     def _key_press(self, event: KeyEvent) -> None:
-        """Handler for key press events."""
+        """Handle key press events."""
         if event.key is None:
             return
         if event.key == "shift":
@@ -410,16 +410,14 @@ class InteractiveCube(Axes):
             self._digit_flags[int(event.key)] = 1
         elif event.key == "right":
             ax_lr = self._ax_LR_alt if self._shift else self._ax_LR
-            self.rotate(Quaternion.from_v_theta(np.array(ax_lr, dtype=np.float32), np.float32(5 * self._step_LR)))
+            self.rotate(Quaternion.from_v_theta(np.array(ax_lr, dtype=np.float32), float(5 * self._step_LR)))
         elif event.key == "left":
             ax_lr = self._ax_LR_alt if self._shift else self._ax_LR
-            self.rotate(Quaternion.from_v_theta(np.array(ax_lr, dtype=np.float32), np.float32(-5 * self._step_LR)))
+            self.rotate(Quaternion.from_v_theta(np.array(ax_lr, dtype=np.float32), float(-5 * self._step_LR)))
         elif event.key == "up":
-            self.rotate(Quaternion.from_v_theta(np.array(self._ax_UD, dtype=np.float32), np.float32(5 * self._step_UD)))
+            self.rotate(Quaternion.from_v_theta(np.array(self._ax_UD, dtype=np.float32), float(5 * self._step_UD)))
         elif event.key == "down":
-            self.rotate(
-                Quaternion.from_v_theta(np.array(self._ax_UD, dtype=np.float32), np.float32(-5 * self._step_UD))
-            )
+            self.rotate(Quaternion.from_v_theta(np.array(self._ax_UD, dtype=np.float32), float(-5 * self._step_UD)))
         elif event.key.upper() in "LRUDBF":
             direction: float = -1 if self._shift else 1
 
@@ -432,7 +430,7 @@ class InteractiveCube(Axes):
         self._draw_cube()
 
     def _key_release(self, event: KeyEvent) -> None:
-        """Handler for key release event."""
+        """Handle key release event."""
         if event.key is None:
             return
         if event.key == "shift":
@@ -441,7 +439,7 @@ class InteractiveCube(Axes):
             self._digit_flags[int(event.key)] = 0
 
     def _mouse_press(self, event: MouseEvent) -> None:
-        """Handler for mouse button press."""
+        """Handle mouse button press."""
         if event.x is not None and event.y is not None:
             self._event_xy = (float(event.x), float(event.y))
         if event.button == 1:
@@ -450,7 +448,7 @@ class InteractiveCube(Axes):
             self._button2 = True
 
     def _mouse_release(self, event: MouseEvent) -> None:
-        """Handler for mouse button release."""
+        """Handle mouse button release."""
         self._event_xy = None
         if event.button == 1:
             self._button1 = False
@@ -458,7 +456,7 @@ class InteractiveCube(Axes):
             self._button2 = False
 
     def _mouse_motion(self, event: MouseEvent) -> None:
-        """Handler for mouse motion."""
+        """Handle mouse motion."""
         if (
             (self._button1 or self._button2)
             and self._event_xy is not None
@@ -488,7 +486,7 @@ class InteractiveCube(Axes):
 
 
 def main() -> None:
-    """Main function to create and display an interactive Rubik's cube."""
+    """Create and display an interactive Rubik's cube."""
     try:
         n: int = int(sys.argv[1])
     except (IndexError, ValueError):
