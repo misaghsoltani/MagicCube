@@ -20,9 +20,13 @@ Interactive Cube
 ~~~~~~~~~~~~~~~~
 To use the matplotlib-based interactive cube, run 
 
+  .. code-block:: bash
+
      python magiccube/cube_interactive.py
 
 If you want a cube with a different number of sides, use e.g.
+
+  .. code-block:: bash
 
      python magiccube/cube_interactive.py 5
 
@@ -46,6 +50,29 @@ Other
 ~~~~~
 There are more tools available -- for now, RTFSC.
 
+Using Pixi
+----------
+
+This project supports `Pixi <https://pixi.sh/>`_ for package management and environment handling.
+
+To get started with Pixi:
+
+1. Install Pixi by following the instructions at https://pixi.sh/
+2. Install dependencies and run the code:
+
+   .. code-block:: bash
+
+      pixi install
+      pixi shell
+      # Then run the code as described above
+
+3. Alternatively, to install all environments and dependencies:
+
+   .. code-block:: bash
+
+      pixi install --all
+      pixi shell -e all
+      # Then run the code as described above
 
 License
 -------
